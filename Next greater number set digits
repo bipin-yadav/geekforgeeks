@@ -29,6 +29,7 @@ not possible
 
 
 
+
 import java.util.*;
 import java.lang.*;
 import java.io.*;
@@ -38,49 +39,50 @@ class GFG {
      BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
      int T=Integer.parseInt(br.readLine());
      for(int i =0 ;i< T ;i++){
-        int n=Integer.parseInt(br.readLine());
-        GFG.big(n);
-     }
- }
- static void big(int a){
-   String n=a+"";
-   char c[]=n.toCharArray();
-   for(int i=c.length-1;i>=1;i--)
-   {
-       if (c[i-1]>c[i])
-       {
-           continue;
-       }
-       else
-       {
-         //swap
-           int index=GFG.check(c,c[i-1]);
-           char temp=c[i-1];
-           c[i-1]=c[index];
-           c[index]=temp;
-           
-           Arrays.sort(c,i,c.length);
-          
-           break;
-       }
-       
-   }
-   String temp = new String(c);
-   if(Integer.parseInt(temp) == a){
-      System.out.println("not possible"); 
-   } else {
-    System.out.println(temp);
-    }    
+        int in = Integer.parseInt(br.readLine());
+        try{
+        int out = GFG.nextHigherWithSameDigits(in);
+        System.out.println(out);
+        } catch (Exception e){
+            System.out.println("not possible"); 
+        }
+    }
  }
  
- static int check(char a[],int j){
-     int k;
-         for( k=a.length-1;k>=0;k--)
-         {
-           if(a[k]>j)
-            break; 
-         }    
-         return k;
- }
- 
+ public static int nextHigherWithSameDigits(int number){
+	char arr[] = String.valueOf(number).toCharArray();
+
+		int count[] = new int[10];
+
+		for(int i = arr.length - 1; i > 0; i--) {
+			int digit = Integer.valueOf(String.valueOf(arr[i]));
+			int nextDigit = Integer.valueOf(String.valueOf(arr[i-1]));
+			count[digit]++;
+
+			if(digit > nextDigit) {
+				
+				for(int j = nextDigit + 1; j < count.length; j++) {
+					if(count[j] > 0) { // this is the digit to be replaced
+						count[nextDigit]++;
+						count[j]--;
+						String numStr = String.valueOf(Arrays.copyOfRange(arr, 0, i-1)) + j; // from 0...i-2+j
+
+						for(int k = 0; k < count.length; k++) { // drain lowest first
+							while(count[k] > 0) {
+								numStr = numStr + k;
+								count[k]--;
+							}
+						}
+						
+						return Integer.valueOf(numStr);
+						
+						
+					}
+				}
+			}
+
+		}
+
+		throw new IllegalArgumentException("Can not find a next greater number using " + number);
+	}
 }
