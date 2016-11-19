@@ -1,0 +1,86 @@
+Given a number n, find the smallest number that has same set of digits as n and is greater than n. If x is the greatest possible number with its set of digits, then print “not possible”.
+
+Input:
+
+The first line of input contains an integer T denoting the number of test cases.
+The first line of each test case is n,n is the number.
+
+Output:
+
+Print the greater number than n with same set of digits and if not possible then print "not possible" without double quote.
+
+Constraints:
+
+1 ≤ T ≤ 100
+1 ≤ n ≤ 100000
+
+Example:
+
+Input
+2
+143
+431
+
+Output
+314
+not possible
+
+
+
+
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+	 public static void main(String args[]) throws IOException{
+     BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+     int T=Integer.parseInt(br.readLine());
+     for(int i =0 ;i< T ;i++){
+        int n=Integer.parseInt(br.readLine());
+        GFG.big(n);
+     }
+ }
+ static void big(int a){
+   String n=a+"";
+   char c[]=n.toCharArray();
+   for(int i=c.length-1;i>=1;i--)
+   {
+       if (c[i-1]>c[i])
+       {
+           continue;
+       }
+       else
+       {
+         //swap
+           int index=GFG.check(c,c[i-1]);
+           char temp=c[i-1];
+           c[i-1]=c[index];
+           c[index]=temp;
+           
+           Arrays.sort(c,i,c.length);
+          
+           break;
+       }
+       
+   }
+   String temp = new String(c);
+   if(Integer.parseInt(temp) == a){
+      System.out.println("not possible"); 
+   } else {
+    System.out.println(temp);
+    }    
+ }
+ 
+ static int check(char a[],int j){
+     int k;
+         for( k=a.length-1;k>=0;k--)
+         {
+           if(a[k]>j)
+            break; 
+         }    
+         return k;
+ }
+ 
+}
